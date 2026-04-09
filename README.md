@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dlús Recovery
 
-## Getting Started
+Brochure site for **Dlús Recovery Limited** — a recovery and wellness studio
+offering Hyperbaric Oxygen Therapy (HBOT), Red Light Therapy and PEMF Therapy.
 
-First, run the development server:
+Built and maintained by [Northcode Studio](https://northcode.studio).
+
+## Stack
+
+- Next.js 16 (App Router) + React 19 + TypeScript (strict)
+- Tailwind CSS v4
+- Sanity (embedded studio at `/studio`)
+- Resend (contact form)
+- Vercel Analytics + Google Analytics 4
+- Lucide icons + Fraunces / Inter via `next/font`
+
+> ⚠️ Next 16 has real differences from Next 14/15 — `params` and `searchParams`
+> are async Promises, middleware is replaced by `proxy`, and Turbopack is the
+> default builder. Read
+> `node_modules/next/dist/docs/01-app/02-guides/upgrading/version-16.md`
+> before changing routing or caching code.
+
+## Local setup
 
 ```bash
+# 1. Install
+npm install
+
+# 2. Copy env file and fill in real values
+cp .env.example .env.local
+
+# 3. (First-time only) Create the Sanity project
+npx sanity init --env=.env.local
+#   - When prompted for an organisation, select "Northcode" — all Dlús
+#     Sanity content is owned by Northcode Studio during build & maintenance.
+#     (Sanity supports transferring projects between orgs later if the client
+#     ever wants direct ownership — no code changes needed.)
+#   - Project name: "Dlús Recovery"
+#   - Dataset: "production" (matches NEXT_PUBLIC_SANITY_DATASET in .env.example)
+#   - Paste the printed projectId into NEXT_PUBLIC_SANITY_PROJECT_ID
+#   - Generate a write-enabled API token in the Sanity dashboard
+#     (Manage → API → Tokens → Add API token → "Editor") and paste into
+#     SANITY_API_TOKEN
+
+# 4. Seed the dataset with placeholder content
+npm run sanity:seed
+
+# 5. Run dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open <http://localhost:3000>. The studio is at <http://localhost:3000/studio>.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+See `.env.example` for the canonical list. The site will build with empty
+Sanity / Resend env vars — pages render with placeholder fallbacks and the
+contact form returns a friendly 503. **Do not deploy without filling them in.**
 
-## Learn More
+## Updating Acuity links
 
-To learn more about Next.js, take a look at the following resources:
+All booking buttons read from a single file:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```ts
+// lib/acuity.ts
+export const ACUITY_LINKS = {
+  hbot: "https://app.acuityscheduling.com/...",
+  redLight: "...",
+  pemf: "...",
+  consultation: "...",
+};
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Each value is the deep link to a specific Acuity appointment type
+(`?owner=…&appointmentType=…`). Change them here and every CTA across the
+site updates.
 
-## Deploy on Vercel
+## Sanity content
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Schemas live in `sanity/schemas/`:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `siteSettings` — singleton (business name, contact, hours, address, social)
+- `service` — HBOT, Red Light, PEMF
+- `pricingTier` — single sessions, bundles, memberships
+- `faq` — categorised
+- `testimonial`
+
+Edit content via the embedded studio at `/studio`. Pages revalidate every 60s
+by default; on-demand revalidation can be added later via a webhook + the
+`SANITY_API_TOKEN`.
+
+To re-run the seed (it's idempotent — uses `createOrReplace`):
+
+```bash
+npm run sanity:seed
+```
+
+## Health-claim copy rules
+
+This is a UK/Ireland wellness business — ASA and MHRA regulate health claims
+strictly. **Do not write copy that says "treats", "cures", "heals" or
+"prevents".** Always hedge: "may support", "users report", "research suggests",
+"is commonly used for". Anything that needs a citation is marked with a
+`TODO: verify source` comment. Anything ambiguous is marked
+`TODO: legal review`.
+
+The footer disclaimer is rendered site-wide. The HBOT page carries a
+prominent pre-screening notice.
+
+## Deployment
+
+Deploys to Vercel. Set every key in `.env.example` as a Project Environment
+Variable in Vercel. Verify the Resend sending domain (`dlusrecovery.com`)
+before sending real mail.
+
+## Pre-launch
+
+See [`docs/launch-checklist.md`](docs/launch-checklist.md).

@@ -1,26 +1,344 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------
+   Dlús Recovery — design tokens
+   Organised in four layers so individual knobs are findable:
+     1. Colour      — cream / charcoal / teal + warm brass micro-accent
+     2. Depth       — two-step shadow scale + one grain overlay
+     3. Typography  — editorial scale built on Fraunces variable axes
+     4. Motion      — shared durations + easings used by `motion/react`
+   Every numeric value gets a comment so the design intent survives.
+   --------------------------------------------------------------- */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* 1. Colour — primary palette (unchanged, sampled from logo) */
+  --bg: #fdfbf2;             /* warm cream — page background */
+  --fg: #2b2b2b;             /* charcoal — body copy */
+  --wordmark: #4a4a4a;       /* logo wordmark grey */
+  --muted: #7a766d;          /* secondary text */
+  --rule: #ece4d2;           /* hairline borders */
+  --surface: #ffffff;        /* cards / elevated */
+
+  /* 1a. Primary accent — teal (the brand anchor) */
+  --accent: #509ca4;
+  --accent-deep: #3d8088;
+  --accent-soft: #e3efef;
+  --accent-ink: #fdfbf2;
+
+  /* 1b. Secondary accent — warm brass / terracotta
+     Used sparingly (rules, tiny marks, founder letter signature).
+     Keeps teal from reading as a default Tailwind palette. */
+  --ember: #b8744a;          /* brass-terracotta mid */
+  --ember-soft: #f4e7dc;     /* tinted background for callouts */
+  --ember-deep: #8f5632;     /* pressed state */
+
+  /* 1c. Deep tonal slab used on HBOT hero + full-bleed quotes */
+  --slab: #1e2a2c;           /* near-black with teal undertone */
+  --slab-ink: #eef2f0;       /* cream-adjacent text on slab */
+
+  /* 2. Depth tokens — restrained. Two shadows, one grain. */
+  --shadow-sm: 0 1px 2px rgb(30 42 44 / 0.04),
+               0 2px 8px rgb(30 42 44 / 0.04);
+  --shadow-lg: 0 4px 12px rgb(30 42 44 / 0.06),
+               0 24px 48px rgb(30 42 44 / 0.08);
+
+  /* 3. Typography — editorial scale.
+     Sizes follow a 1.25 major-third ratio from 16px body.
+     Line-heights are tighter at display, looser at body.
+     Measurements in rem so zoom works. */
+  --text-micro: 0.6875rem;   /* 11px  — eyebrow caps  */
+  --text-xs: 0.75rem;        /* 12px  — fine print    */
+  --text-sm: 0.875rem;       /* 14px  — meta          */
+  --text-base: 1rem;         /* 16px  — body          */
+  --text-lg: 1.125rem;       /* 18px  — lead          */
+  --text-xl: 1.375rem;       /* 22px  — subhead       */
+  --text-2xl: 1.75rem;       /* 28px  — h4            */
+  --text-3xl: 2.25rem;       /* 36px  — h3            */
+  --text-4xl: 3rem;          /* 48px  — h2            */
+  --text-5xl: 4rem;          /* 64px  — h1            */
+  --text-6xl: 5.5rem;        /* 88px  — display sm    */
+  --text-7xl: 7.5rem;        /* 120px — display lg    */
+  --text-8xl: 10rem;         /* 160px — hero          */
+
+  --lh-display: 0.95;        /* display headings breathe negative  */
+  --lh-heading: 1.08;        /* h1/h2                              */
+  --lh-subhead: 1.2;         /* h3/h4                              */
+  --lh-body: 1.62;           /* measured prose                     */
+
+  --measure: 65ch;           /* ideal line length for long-form    */
+  --max-w: 1180px;           /* default grid cap                   */
+  --max-w-wide: 1440px;      /* editorial full-bleed cap           */
+
+  /* 4. Motion — shared easings/durations (consumed by motion/react) */
+  --ease-out-smooth: cubic-bezier(0.16, 1, 0.3, 1);     /* expo-out */
+  --ease-out-gentle: cubic-bezier(0.22, 1, 0.36, 1);    /* quint-out */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 180ms;
+  --dur-med: 420ms;
+  --dur-slow: 720ms;
+  --dur-curtain: 900ms;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --color-wordmark: var(--wordmark);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --color-surface: var(--surface);
+  --color-accent: var(--accent);
+  --color-accent-deep: var(--accent-deep);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-ember: var(--ember);
+  --color-ember-soft: var(--ember-soft);
+  --color-ember-deep: var(--ember-deep);
+  --color-slab: var(--slab);
+  --color-slab-ink: var(--slab-ink);
+  --font-sans: var(--font-sans-stack);
+  --font-serif: var(--font-serif-stack);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans-stack), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--text-base);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01", "cv11"; /* Inter: stylistic set 1 + single-storey a */
+}
+
+/* --------------------------------------------------------------
+   Typography utilities
+   Applied via className (e.g. `.t-display`, `.t-eyebrow`) so they
+   coexist cleanly with Tailwind. Every class sets family + weight
+   + size + line-height + tracking as a single unit — the design
+   system promise is that you never reach for a serif font + a
+   size + a leading independently.
+   -------------------------------------------------------------- */
+
+.t-display {
+  font-family: var(--font-serif-stack), ui-serif, Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(var(--text-6xl), 11vw, var(--text-8xl));
+  line-height: var(--lh-display);
+  letter-spacing: -0.035em;
+  /* Drive Fraunces' opsz axis so large sizes get the "display" shapes */
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  text-wrap: balance;
+}
+
+.t-display-sm {
+  font-family: var(--font-serif-stack), ui-serif, Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(var(--text-5xl), 7vw, var(--text-6xl));
+  line-height: var(--lh-display);
+  letter-spacing: -0.03em;
+  font-variation-settings: "opsz" 96, "SOFT" 40;
+  text-wrap: balance;
+}
+
+.t-h1 {
+  font-family: var(--font-serif-stack), ui-serif, Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(var(--text-4xl), 5vw, var(--text-5xl));
+  line-height: var(--lh-heading);
+  letter-spacing: -0.022em;
+  font-variation-settings: "opsz" 72, "SOFT" 30;
+  text-wrap: balance;
+}
+
+.t-h2 {
+  font-family: var(--font-serif-stack), ui-serif, Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(var(--text-3xl), 4vw, var(--text-4xl));
+  line-height: var(--lh-heading);
+  letter-spacing: -0.018em;
+  font-variation-settings: "opsz" 48, "SOFT" 20;
+  text-wrap: balance;
+}
+
+.t-h3 {
+  font-family: var(--font-serif-stack), ui-serif, Georgia, serif;
+  font-weight: 400;
+  font-size: var(--text-2xl);
+  line-height: var(--lh-subhead);
+  letter-spacing: -0.014em;
+  font-variation-settings: "opsz" 30;
+}
+
+.t-h4 {
+  font-family: var(--font-serif-stack), ui-serif, Georgia, serif;
+  font-weight: 400;
+  font-size: var(--text-xl);
+  line-height: var(--lh-subhead);
+  letter-spacing: -0.012em;
+}
+
+.t-lead {
+  font-family: var(--font-sans-stack), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  max-width: var(--measure);
+  color: var(--muted);
+}
+
+.t-body {
+  font-family: var(--font-sans-stack), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--text-base);
+  line-height: var(--lh-body);
+  max-width: var(--measure);
+}
+
+/* Eyebrow: small-caps label that sits above headings.
+   Uses tracking + uppercase to feel editorial without a second family. */
+.t-eyebrow {
+  font-family: var(--font-sans-stack), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--text-micro);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--accent);
+}
+
+/* Pull-quote: used in testimonial spreads and founder letter.
+   Leans on Fraunces' SOFT axis at a higher value for a rounded,
+   warmer display feel than the main headings. */
+.t-quote {
+  font-family: var(--font-serif-stack), ui-serif, Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(var(--text-3xl), 4.5vw, var(--text-5xl));
+  line-height: 1.12;
+  letter-spacing: -0.018em;
+  font-variation-settings: "opsz" 60, "SOFT" 100;
+  text-wrap: balance;
+}
+
+/* Default heading elements still inherit serif so markdown/Portable
+   Text renders look right without needing the utility classes. */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif-stack), ui-serif, Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.012em;
+}
+
+/* --------------------------------------------------------------
+   Texture — grain overlay used on hero sections, slabs and cards
+   where we want the "printed on uncoated stock" feel. Delivered
+   via an SVG data URI so there's zero network cost and it works
+   inside shadow DOM + Portable Text.
+   Opacity is kept under 10% so it reads as warmth, not noise.
+   -------------------------------------------------------------- */
+
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.08;
+  mix-blend-mode: multiply;
+  background-image: url("/textures/grain-01.svg");
+  background-size: 240px 240px;
+}
+
+.grain-strong::after {
+  opacity: 0.14;
+}
+
+.grain > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Radial vignette for hero slabs — softens edges on full-bleed
+   sections that would otherwise feel flat. */
+.vignette {
+  position: relative;
+  isolation: isolate;
+}
+
+.vignette::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    rgb(30 42 44 / 0.18) 100%
+  );
+}
+
+.vignette > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------
+   Focus ring — unchanged from scaffold, just hoisted below the
+   new tokens so everything lives in one file.
+   -------------------------------------------------------------- */
+
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* --------------------------------------------------------------
+   Reduced motion — kills every scripted animation, including the
+   ones `motion/react` drives, by setting durations near-zero.
+   AmbientField canvas + Cursor + Magnetic all check this query
+   at the JS level too, as a belt-and-braces measure.
+   -------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* --------------------------------------------------------------
+   Custom cursor — host-side rules. The <Cursor/> component sets
+   `data-cursor` on body; we hide the OS cursor only on pointer:fine
+   devices so touch never loses its default.
+   -------------------------------------------------------------- */
+
+@media (pointer: fine) {
+  body[data-cursor="on"] {
+    cursor: none;
+  }
+  body[data-cursor="on"] a,
+  body[data-cursor="on"] button,
+  body[data-cursor="on"] [role="button"],
+  body[data-cursor="on"] input,
+  body[data-cursor="on"] textarea,
+  body[data-cursor="on"] select,
+  body[data-cursor="on"] summary {
+    cursor: none;
+  }
 }
