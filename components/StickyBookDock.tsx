@@ -39,7 +39,7 @@ export default function StickyBookDock() {
           href="/book"
           className="pointer-events-auto inline-flex items-center gap-3 rounded-full border border-[var(--slab)]/15 bg-[var(--surface)] px-5 py-3 text-sm shadow-[var(--shadow-lg)]"
         >
-          <span className="t-eyebrow" style={{ color: "var(--muted)" }}>
+          <span className="t-eyebrow hidden sm:inline" style={{ color: "var(--muted)" }}>
             Ready when you are
           </span>
           <span className="font-medium">Book a session</span>
@@ -59,7 +59,7 @@ export default function StickyBookDock() {
         className="group pointer-events-auto inline-flex items-center gap-3 rounded-full border border-[var(--slab)]/15 bg-[var(--surface)] px-5 py-3 text-sm shadow-[var(--shadow-lg)] backdrop-blur"
       >
         <span
-          className="t-eyebrow"
+          className="t-eyebrow hidden sm:inline"
           style={{ color: "var(--muted)" }}
           aria-hidden="true"
         >

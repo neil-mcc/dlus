@@ -16,7 +16,7 @@ import type { AcuityServiceKey } from "@/lib/acuity";
 
 /**
  * ServicePage — shared template consumed by /hbot, /red-light-therapy
- * and /pemf. It takes a `variant` prop that swaps per-modality art
+ * and /pemf. It takes a `variant` prop that swaps per-therapy art
  * direction (hero backdrop, eyebrow colour, "mood"), while the
  * content backbone and information architecture stay identical so
  * editors have one Sanity schema to populate.
@@ -45,14 +45,14 @@ type Props = {
   showHbotNotice?: boolean;
   /**
    * Optional research citations rendered near the bottom of the
-   * page. Per-modality defaults live in the page files themselves
+   * page. Per-therapy defaults live in the page files themselves
    * so they can stay editable without touching the template.
    */
   citations?: Citation[];
 };
 
 // Eyebrow + small styling tokens per variant. Keeps the variant
-// config in one place so adding a fourth modality is one line.
+// config in one place so adding a fourth therapy is one line.
 const VARIANTS: Record<
   Variant,
   {
@@ -98,7 +98,7 @@ export default function ServicePage({
   const summary = service?.shortDescription ?? fallback.summary;
   const bookKey = service?.acuityLinkKey ?? fallback.bookKey;
 
-  // When real photography exists for this modality, layer it under the
+  // When real photography exists for this therapy, layer it under the
   // AmbientField and crank the dark overlay so the type still reads.
   const heroImage = service?.heroImage;
   type Asset = { metadata?: { lqip?: string } };

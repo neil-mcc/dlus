@@ -55,11 +55,22 @@ export default function MinuteByMinute() {
   const progress = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
-    <div ref={ref} className="relative h-[300vh]">
+    <>
+      {/* On mobile the heading sits above the pinned scroll container
+          so the steps have enough vertical room inside h-screen. */}
+      <div className="px-6 pb-6 pt-20 sm:px-8 sm:pb-8 sm:pt-28 lg:hidden">
+        <span className="t-eyebrow">A first visit</span>
+        <h2 className="t-h1 mt-4">
+          Your first session, <br />
+          minute by minute.
+        </h2>
+      </div>
+
+      <div ref={ref} className="relative h-[300vh]">
       <div className="sticky top-0 flex h-screen items-center">
-        <div className="mx-auto grid w-full max-w-[var(--max-w)] gap-12 px-6 sm:px-8 lg:grid-cols-[1fr_1.6fr]">
-          {/* Left rail — eyebrow + heading + progress line */}
-          <div className="flex flex-col gap-8">
+        <div className="mx-auto grid w-full max-w-[var(--max-w)] gap-8 px-6 sm:gap-12 sm:px-8 lg:grid-cols-[1fr_1.6fr]">
+          {/* Left rail — eyebrow + heading + progress line (desktop only) */}
+          <div className="hidden flex-col gap-8 lg:flex">
             <span className="t-eyebrow">A first visit</span>
             <h2 className="t-h1">
               Your first session, <br />
@@ -78,7 +89,7 @@ export default function MinuteByMinute() {
               scroll past its threshold. We use `useTransform` on
               scrollYProgress to map ranges to opacity without
               mounting per-row observers. */}
-          <ol className="flex flex-col gap-10">
+          <ol className="flex flex-col gap-6 sm:gap-10">
             {STEPS.map((step, i) => (
               <Row
                 key={step.time}
@@ -92,6 +103,7 @@ export default function MinuteByMinute() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 
@@ -117,7 +129,7 @@ function Row({
   // progress hits 1.
   const isLast = index === count - 1;
   const windowStart = 0.05;
-  const windowEnd = 0.9;
+  const windowEnd = 0.65;
   const span = windowEnd - windowStart;
   const peak = windowStart + (span * (index + 0.5)) / count;
   const half = span / count;
@@ -128,8 +140,8 @@ function Row({
   // it remains fully visible as the viewer reads past the pin.
   const opacity = useTransform(
     progress,
-    isLast ? [fadeIn, peak] : [fadeIn, peak, fadeOut],
-    isLast ? [0.35, 1] : [0.35, 1, 0.35],
+    isLast ? [fadeIn, peak, 1] : [fadeIn, peak, fadeOut],
+    isLast ? [0.35, 1, 1] : [0.35, 1, 0.35],
   );
 
   return (

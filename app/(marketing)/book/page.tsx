@@ -37,7 +37,7 @@ const STEPS = [
   {
     icon: CircleCheck,
     title: "Choose your session",
-    body: "Pick a modality and a time that fits. You'll get a confirmation email the moment your slot is held.",
+    body: "Pick a therapy and a time that fits. You'll get a confirmation email the moment your slot is held.",
   },
   {
     icon: Leaf,
@@ -57,7 +57,7 @@ export default function BookPage() {
       {/* --------------------------------------------------------
           1. HERO
           -------------------------------------------------------- */}
-      <Section bleed className="pt-36 pb-14 sm:pt-44">
+      <Section bleed className="pt-24 pb-14 sm:pt-44">
         <Reveal>
           <span className="t-eyebrow">Book</span>
           <h1 className="t-display-sm mt-4 max-w-[14ch]">
@@ -137,7 +137,7 @@ export default function BookPage() {
                 <p className="mt-2 text-sm leading-relaxed text-[var(--fg)]/80">
                   Book a free 15-minute consultation. We&rsquo;ll walk you
                   through the space, answer questions, and help you pick the
-                  right modality for your goals.
+                  right therapy for your goals.
                 </p>
                 <p className="mt-4 text-xs text-[var(--muted)]">
                   Select <strong>Free consult</strong> in the picker →

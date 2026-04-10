@@ -113,7 +113,7 @@ export default function PressKitPage() {
           </Specimen>
           <Specimen label="t-lead">
             <p className="t-lead" style={{ color: "var(--muted)" }}>
-              A small Armagh recovery studio built around three modalities and
+              A small Armagh recovery studio built around three therapies and
               a simple idea.
             </p>
           </Specimen>
@@ -136,7 +136,7 @@ export default function PressKitPage() {
           className="mb-10 max-w-xl text-sm leading-relaxed"
           style={{ color: "var(--muted)" }}
         >
-          Canvas 2D generative art, one variant per modality. Respects
+          Canvas 2D generative art, one variant per therapy. Respects
           prefers-reduced-motion and pauses when off-screen or tab-hidden.
         </p>
         <div className="grid gap-6 sm:grid-cols-2">

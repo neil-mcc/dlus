@@ -8,14 +8,14 @@ import AmbientField from "@/components/AmbientField";
 import Magnetic from "@/components/motion/Magnetic";
 
 /**
- * ModalityChooser — a 3-question interactive quiz that recommends
+ * TherapyChooser — a 3-question interactive quiz that recommends
  * HBOT, Red Light or PEMF based on (1) goal, (2) sensitivity to
  * enclosed spaces, and (3) preferred time commitment.
  *
  * Philosophy: this is the most interactive single element on the
  * whole site, so it has to be both technically pretty *and*
  * substantively useful. The scoring is simple — each answer adds
- * weight to one or more modalities — but the presentation uses
+ * weight to one or more therapies — but the presentation uses
  * the same motion vocabulary as the rest of the site so it feels
  * native, not bolted on.
  *
@@ -30,12 +30,12 @@ import Magnetic from "@/components/motion/Magnetic";
  * - Respects `prefers-reduced-motion` by swapping tween props.
  */
 
-type Modality = "hbot" | "redLight" | "pemf";
+type Therapy = "hbot" | "redLight" | "pemf";
 
 type Option = {
   label: string;
-  /** Points added to each modality if this option is chosen. */
-  weights: Partial<Record<Modality, number>>;
+  /** Points added to each therapy if this option is chosen. */
+  weights: Partial<Record<Therapy, number>>;
 };
 
 type Question = {
@@ -47,7 +47,7 @@ type Question = {
 const QUESTIONS: Question[] = [
   {
     prompt: "What are you hoping to get out of today?",
-    hint: "Pick the one that sounds closest. You can stack modalities later if your goals shift.",
+    hint: "Pick the one that sounds closest. You can stack therapies later if your goals shift.",
     options: [
       {
         label: "Faster physical recovery after training",
@@ -105,14 +105,14 @@ const QUESTIONS: Question[] = [
   },
 ];
 
-const MODALITY_META: Record<
-  Modality,
+const THERAPY_META: Record<
+  Therapy,
   {
     title: string;
     subtitle: string;
     href: string;
     copy: string;
-    bookKey: Modality;
+    bookKey: Therapy;
   }
 > = {
   hbot: {
@@ -158,25 +158,25 @@ function decodeHash(hash: string): number[] {
     .filter((n) => Number.isFinite(n));
 }
 
-function scoreAnswers(answers: number[]): Modality {
-  const scores: Record<Modality, number> = { hbot: 0, redLight: 0, pemf: 0 };
+function scoreAnswers(answers: number[]): Therapy {
+  const scores: Record<Therapy, number> = { hbot: 0, redLight: 0, pemf: 0 };
   answers.forEach((answerIdx, qIdx) => {
     const opt = QUESTIONS[qIdx]?.options[answerIdx];
     if (!opt) return;
     for (const [m, w] of Object.entries(opt.weights)) {
-      scores[m as Modality] += w ?? 0;
+      scores[m as Therapy] += w ?? 0;
     }
   });
   // Tie-break by a fixed order so results are deterministic.
-  const order: Modality[] = ["hbot", "pemf", "redLight"];
-  let best: Modality = order[0];
+  const order: Therapy[] = ["hbot", "pemf", "redLight"];
+  let best: Therapy = order[0];
   for (const m of order) {
     if (scores[m] > scores[best]) best = m;
   }
   return best;
 }
 
-export default function ModalityChooser() {
+export default function TherapyChooser() {
   const reduce = useReducedMotion();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
@@ -339,32 +339,32 @@ export default function ModalityChooser() {
                     className="t-eyebrow"
                     style={{ color: "var(--accent)" }}
                   >
-                    {MODALITY_META[result].subtitle}
+                    {THERAPY_META[result].subtitle}
                   </span>
                 </div>
                 <h2
                   className="t-display-sm max-w-[14ch]"
                   style={{ color: "var(--slab-ink)" }}
                 >
-                  Start with {MODALITY_META[result].title}.
+                  Start with {THERAPY_META[result].title}.
                 </h2>
                 <p
                   className="max-w-xl text-base leading-relaxed"
                   style={{ color: "var(--slab-ink)", opacity: 0.8 }}
                 >
-                  {MODALITY_META[result].copy}
+                  {THERAPY_META[result].copy}
                 </p>
                 <div className="mt-2 flex flex-wrap items-center gap-5">
                   <Magnetic>
                     <Link
-                      href={`/book?service=${MODALITY_META[result].bookKey}`}
+                      href={`/book?service=${THERAPY_META[result].bookKey}`}
                       className="inline-flex items-center justify-center rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-medium uppercase tracking-wide text-[var(--accent-ink)] hover:bg-[var(--accent-deep)]"
                     >
-                      Book {MODALITY_META[result].title}
+                      Book {THERAPY_META[result].title}
                     </Link>
                   </Magnetic>
                   <Link
-                    href={MODALITY_META[result].href}
+                    href={THERAPY_META[result].href}
                     className="inline-flex items-center gap-2 text-sm font-medium underline-offset-4 hover:underline"
                     style={{ color: "var(--slab-ink)" }}
                   >

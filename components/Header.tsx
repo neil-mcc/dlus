@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import MobileNav from "@/components/MobileNav";
 
-const NAV = [
+export const NAV = [
   { href: "/hbot", label: "HBOT" },
   { href: "/red-light-therapy", label: "Red Light" },
   { href: "/pemf", label: "PEMF" },
@@ -14,20 +15,22 @@ const NAV = [
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-40 backdrop-blur-md bg-[color-mix(in_srgb,var(--bg)_88%,transparent)] border-b border-[var(--rule)]">
-      <div className="mx-auto flex w-full max-w-[var(--max-w)] items-center justify-between gap-6 px-6 py-3 sm:px-8">
+    <header className="sticky top-0 z-[95] backdrop-blur-md bg-[color-mix(in_srgb,var(--bg)_88%,transparent)] border-b border-[var(--rule)]">
+      <div className="mx-auto flex w-full max-w-[var(--max-w)] items-center justify-between gap-4 px-4 py-3 sm:gap-6 sm:px-8">
         <Link href="/" aria-label="Dlús Recovery — home" className="flex items-center">
           <Image
-            src="/brand/logo38454221.svg"
+            src="/brand/untitled.svg"
             alt="Dlús Recovery"
-            width={400}
-            height={400}
+            width={200}
+            height={200}
             priority
-            className="h-24 w-auto sm:h-14"
+            className="h-14 w-auto"
           />
         </Link>
-        <nav className="hidden md:block" aria-label="Primary">
-          <ul className="flex items-center gap-7 text-sm">
+
+        {/* Desktop nav — visible from lg up (1024px+) */}
+        <nav className="hidden lg:block" aria-label="Primary">
+          <ul className="flex items-center gap-5 text-sm xl:gap-7">
             {NAV.map((item) => (
               <li key={item.href}>
                 <Link
@@ -48,13 +51,17 @@ export default function Header() {
             </li>
           </ul>
         </nav>
-        {/* Mobile: compact Book CTA (full nav lives in a future mobile menu) */}
-        <Link
-          href="/book"
-          className="inline-flex items-center justify-center rounded-full bg-[var(--accent)] px-4 py-2 text-xs font-medium uppercase tracking-wide text-[var(--accent-ink)] transition hover:bg-[var(--accent-deep)] md:hidden"
-        >
-          Book
-        </Link>
+
+        {/* Mobile + tablet: hamburger + compact Book CTA */}
+        <div className="flex items-center gap-3 lg:hidden">
+          <Link
+            href="/book"
+            className="inline-flex items-center justify-center rounded-full bg-[var(--accent)] px-5 py-2.5 text-xs font-medium uppercase tracking-wide text-[var(--accent-ink)] transition hover:bg-[var(--accent-deep)]"
+          >
+            Book
+          </Link>
+          <MobileNav items={NAV} />
+        </div>
       </div>
     </header>
   );

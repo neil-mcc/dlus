@@ -6,7 +6,7 @@ import Section from "@/components/Section";
 import BookNowButton from "@/components/BookNowButton";
 import LocalBusinessJsonLd from "@/components/JsonLd";
 import AmbientField from "@/components/AmbientField";
-import ModalityGallery from "@/components/ModalityGallery";
+import TherapyGallery from "@/components/TherapyGallery";
 import MinuteByMinute from "@/components/MinuteByMinute";
 import QuoteSpread from "@/components/QuoteSpread";
 import StatStrip from "@/components/StatStrip";
@@ -30,7 +30,7 @@ export const metadata = buildMetadata({
  * Section rhythm (top → bottom):
  *   1. Typographic hero on a brand AmbientField
  *   2. StatStrip — concrete proof
- *   3. ModalityGallery — horizontal scroll-snap, per-modality ambient
+ *   3. TherapyGallery — horizontal scroll-snap, per-therapy ambient
  *   4. MinuteByMinute — pinned scroll timeline of a first visit
  *   5. QuoteSpread × N — one full-bleed slab per testimonial
  *   6. Location strip (unchanged intent, tightened visuals)
@@ -105,7 +105,7 @@ export default async function HomePage() {
           }}
         />
 
-        <div className="relative mx-auto flex min-h-[92vh] w-full max-w-[var(--max-w-wide)] flex-col justify-between px-6 pb-16 pt-36 sm:px-12 sm:pb-24 sm:pt-48">
+        <div className="relative mx-auto flex min-h-[92vh] w-full max-w-[var(--max-w-wide)] flex-col justify-between px-6 pb-12 pt-24 sm:px-12 sm:pb-24 sm:pt-48">
           {/* Top-left eyebrow */}
           <div className="flex items-center justify-between">
             <span className="t-eyebrow" style={{ color: "var(--accent)" }}>
@@ -126,15 +126,15 @@ export default async function HomePage() {
                 className="t-display max-w-[18ch]"
                 style={{ color: "var(--slab-ink)" }}
               >
-                Slow down.
+                Recovery,
                 <br />
-                Recover deeper.
+                Elevated
               </h1>
               <p
                 className="t-lead mt-8 max-w-xl"
                 style={{ color: "var(--slab-ink)", opacity: 0.75 }}
               >
-                {settings?.tagline ?? "Recovery, Elevated."} Hyperbaric Oxygen,
+                Hyperbaric Oxygen,
                 Red Light and PEMF therapy in a space designed for the nervous
                 system, not the algorithm.
               </p>
@@ -150,7 +150,7 @@ export default async function HomePage() {
                   className="group inline-flex items-center gap-2 text-sm font-medium underline-offset-4"
                   style={{ color: "var(--slab-ink)" }}
                 >
-                  Which modality fits me?
+                  Which therapy fits me?
                   <ArrowUpRight
                     className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                     aria-hidden="true"
@@ -168,7 +168,7 @@ export default async function HomePage() {
       <Section className="border-t border-[var(--rule)]">
         <StatStrip
           items={[
-            { value: "3", label: "Modalities under one roof" },
+            { value: "3", label: "Therapies under one roof" },
             { value: "60", label: "Min. buffer between slots" },
             { value: "2026", label: "Opened this spring" },
             { value: "BT60", label: "Lurgyvallen, Armagh" },
@@ -177,12 +177,12 @@ export default async function HomePage() {
       </Section>
 
       {/* --------------------------------------------------------
-          3. MODALITY GALLERY
+          3. THERAPY GALLERY
           -------------------------------------------------------- */}
       <Section tone="muted">
         <Reveal className="mb-16 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <span className="t-eyebrow">Three modalities</span>
+            <span className="t-eyebrow">Three therapies</span>
             <h2 className="t-h1 mt-4 max-w-xl">
               One studio. Three ways to recover.
             </h2>
@@ -192,7 +192,7 @@ export default async function HomePage() {
             Take the 30-second quiz or book a free 15-minute consultation.
           </p>
         </Reveal>
-        <ModalityGallery />
+        <TherapyGallery />
       </Section>
 
       {/* --------------------------------------------------------

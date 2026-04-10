@@ -4,7 +4,7 @@ import Reveal from "@/components/motion/Reveal";
  * StatStrip — a single horizontal row of three or four oversized
  * numbers paired with a small eyebrow label. Used as the proof
  * layer on home, about, and service pages. The stats are
- * deliberately concrete ("3 modalities", "BT60, Armagh") rather
+ * deliberately concrete ("3 therapies", "BT60, Armagh") rather
  * than vanity metrics — credibility without claims.
  *
  * Numbers sit in serif (Fraunces display opsz) so they match the

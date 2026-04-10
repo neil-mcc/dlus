@@ -27,10 +27,10 @@ export default async function Footer() {
   return (
     <footer className="mt-24 border-t border-[var(--rule)] bg-[var(--bg)] text-[var(--fg)]">
       <div className="mx-auto w-full max-w-[var(--max-w)] px-6 py-16 sm:px-8">
-        <div className="grid gap-12 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-8 sm:gap-12 md:grid-cols-4">
           <div>
             <Image
-              src="/brand/dlus-logo.png"
+              src="/brand/untitled.svg"
               alt={businessName}
               width={200}
               height={200}

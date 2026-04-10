@@ -3,7 +3,6 @@ import { Fraunces, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Curtain from "@/components/motion/Curtain";
-import Cursor from "@/components/motion/Cursor";
 import "./globals.css";
 
 // TODO: confirm font pairing during design pass
@@ -50,12 +49,9 @@ export default function RootLayout({
       className={`${fraunces.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-[var(--bg)] text-[var(--fg)]">
-        {/* Global motion chrome — mounts once per session, persists
-            across soft navigations. `Curtain` is a one-shot intro;
-            `Cursor` handles its own pointer-media + reduced-motion
-            guards and returns null on touch devices. */}
+        {/* One-shot intro curtain — mounts once, persists across
+            soft navigations. */}
         <Curtain />
-        <Cursor />
         {children}
         <Analytics />
         {gaId ? <GoogleAnalytics gaId={gaId} /> : null}

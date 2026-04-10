@@ -24,7 +24,7 @@ import { urlFor } from "@/lib/sanity/image";
  *   "design decision", not "missing image".
  *
  * The `variant` prop picks which duotone to use so the fallback can
- * echo per-modality accent colours without the caller having to
+ * echo per-therapy accent colours without the caller having to
  * compose it manually.
  */
 

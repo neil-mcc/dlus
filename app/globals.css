@@ -123,7 +123,7 @@ body {
 .t-display {
   font-family: var(--font-serif-stack), ui-serif, Georgia, serif;
   font-weight: 400;
-  font-size: clamp(var(--text-6xl), 11vw, var(--text-8xl));
+  font-size: clamp(var(--text-4xl), 11vw, var(--text-8xl));
   line-height: var(--lh-display);
   letter-spacing: -0.035em;
   /* Drive Fraunces' opsz axis so large sizes get the "display" shapes */
@@ -134,7 +134,7 @@ body {
 .t-display-sm {
   font-family: var(--font-serif-stack), ui-serif, Georgia, serif;
   font-weight: 400;
-  font-size: clamp(var(--text-5xl), 7vw, var(--text-6xl));
+  font-size: clamp(var(--text-3xl), 7vw, var(--text-6xl));
   line-height: var(--lh-display);
   letter-spacing: -0.03em;
   font-variation-settings: "opsz" 96, "SOFT" 40;
@@ -144,7 +144,7 @@ body {
 .t-h1 {
   font-family: var(--font-serif-stack), ui-serif, Georgia, serif;
   font-weight: 400;
-  font-size: clamp(var(--text-4xl), 5vw, var(--text-5xl));
+  font-size: clamp(var(--text-3xl), 5vw, var(--text-5xl));
   line-height: var(--lh-heading);
   letter-spacing: -0.022em;
   font-variation-settings: "opsz" 72, "SOFT" 30;
@@ -154,7 +154,7 @@ body {
 .t-h2 {
   font-family: var(--font-serif-stack), ui-serif, Georgia, serif;
   font-weight: 400;
-  font-size: clamp(var(--text-3xl), 4vw, var(--text-4xl));
+  font-size: clamp(var(--text-2xl), 4vw, var(--text-4xl));
   line-height: var(--lh-heading);
   letter-spacing: -0.018em;
   font-variation-settings: "opsz" 48, "SOFT" 20;
@@ -210,7 +210,7 @@ body {
 .t-quote {
   font-family: var(--font-serif-stack), ui-serif, Georgia, serif;
   font-weight: 400;
-  font-size: clamp(var(--text-3xl), 4.5vw, var(--text-5xl));
+  font-size: clamp(var(--text-2xl), 4.5vw, var(--text-5xl));
   line-height: 1.12;
   letter-spacing: -0.018em;
   font-variation-settings: "opsz" 60, "SOFT" 100;
@@ -322,23 +322,3 @@ summary:focus-visible {
   }
 }
 
-/* --------------------------------------------------------------
-   Custom cursor — host-side rules. The <Cursor/> component sets
-   `data-cursor` on body; we hide the OS cursor only on pointer:fine
-   devices so touch never loses its default.
-   -------------------------------------------------------------- */
-
-@media (pointer: fine) {
-  body[data-cursor="on"] {
-    cursor: none;
-  }
-  body[data-cursor="on"] a,
-  body[data-cursor="on"] button,
-  body[data-cursor="on"] [role="button"],
-  body[data-cursor="on"] input,
-  body[data-cursor="on"] textarea,
-  body[data-cursor="on"] select,
-  body[data-cursor="on"] summary {
-    cursor: none;
-  }
-}

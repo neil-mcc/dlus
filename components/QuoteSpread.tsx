@@ -30,7 +30,7 @@ export default function QuoteSpread({
         color: "var(--slab-ink)",
       }}
     >
-      <div className="mx-auto flex min-h-[70vh] w-full max-w-[var(--max-w-wide)] items-center px-6 py-24 sm:px-12 sm:py-32">
+      <div className="mx-auto flex min-h-[50vh] w-full max-w-[var(--max-w-wide)] items-center px-6 py-14 sm:min-h-[70vh] sm:px-12 sm:py-32">
         <div className={align === "right" ? "ml-auto max-w-2xl text-right" : "max-w-2xl"}>
           <Reveal>
             <span

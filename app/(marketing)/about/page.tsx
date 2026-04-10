@@ -33,7 +33,7 @@ export const metadata = buildMetadata({
 const VALUES = [
   {
     title: "Honest hedges",
-    body: "We use \"may support\" and \"users report\" because the science deserves humility. If a modality doesn't fit you, we'll say so.",
+    body: "We use \"may support\" and \"users report\" because the science deserves humility. If a therapy doesn't fit you, we'll say so.",
   },
   {
     title: "Clinical equipment, domestic feel",
@@ -74,7 +74,7 @@ export default async function AboutPage() {
           }}
         />
 
-        <div className="relative mx-auto flex min-h-[72vh] w-full max-w-[var(--max-w-wide)] flex-col justify-end px-6 pb-20 pt-40 sm:px-12 sm:pb-28 sm:pt-48">
+        <div className="relative mx-auto flex min-h-[72vh] w-full max-w-[var(--max-w-wide)] flex-col justify-end px-6 pb-16 pt-24 sm:px-12 sm:pb-28 sm:pt-48">
           <Reveal>
             <span
               className="t-eyebrow"
@@ -96,7 +96,7 @@ export default async function AboutPage() {
               className="t-lead mt-8 max-w-xl"
               style={{ color: "var(--slab-ink)", opacity: 0.75 }}
             >
-              A small Armagh recovery studio built around three modalities and a
+              A small Armagh recovery studio built around three therapies and a
               simple idea: the work you do to recover should feel as good as the
               work you do to perform.
             </p>
@@ -146,7 +146,7 @@ export default async function AboutPage() {
           heading="Why we built Dlús."
           paragraphs={[
             "We opened Dlús this spring because every recovery space we walked into either felt like a gym without the workout or a clinic without the care. Armagh deserved somewhere that respected the equipment and the time it takes to actually switch off.",
-            "We started with three modalities — HBOT, red light, PEMF — because the evidence base is promising and the experience is genuinely pleasant. We avoid the grand claims. Research suggests, users report. The rest you'll feel for yourself.",
+            "We started with three therapies — HBOT, red light, PEMF — because the evidence base is promising and the experience is genuinely pleasant. We avoid the grand claims. Research suggests, users report. The rest you'll feel for yourself.",
             "If you're new to any of this, book a free fifteen-minute consultation. No upsell. We'd rather you leave understanding what a session will and won't do than have you guess.",
           ]}
           signatureName={settings?.founderName ?? "Aoife Delaney"}
@@ -180,7 +180,7 @@ export default async function AboutPage() {
         {/* Six-tile editorial collage. Three picture slots pull from
             `siteSettings.aboutCollage[0..2]` in order. When the array
             is empty (or has fewer than three items) each empty slot
-            falls back to its per-modality duotone. */}
+            falls back to its per-therapy duotone. */}
         <div className="grid grid-cols-2 gap-5 sm:grid-cols-4 sm:grid-rows-2">
           <div className="sm:col-span-2 sm:row-span-2">
             <SanityImage
@@ -271,7 +271,7 @@ export default async function AboutPage() {
       <Section tone="muted">
         <StatStrip
           items={[
-            { value: "3", label: "Modalities" },
+            { value: "3", label: "Therapies" },
             { value: "60", label: "Min. buffer per slot" },
             { value: "2026", label: "Year we opened" },
             { value: "BT60", label: "Lurgyvallen, Armagh" },

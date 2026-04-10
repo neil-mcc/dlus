@@ -55,7 +55,7 @@ function List({ items }: { items: Faq[] }) {
       {items.map((faq) => (
         <li key={faq._id}>
           <details className="group py-5">
-            <summary className="flex cursor-pointer list-none items-start justify-between gap-6 text-left text-base font-medium">
+            <summary className="flex cursor-pointer list-none items-start justify-between gap-3 text-left text-base font-medium sm:gap-6">
               <span>{faq.question}</span>
               <span
                 className="mt-1 text-[var(--muted)] transition group-open:rotate-45"

@@ -35,7 +35,7 @@ export default function FounderLetter({
   role,
 }: Props) {
   return (
-    <Reveal className="grid gap-12 lg:grid-cols-[1fr_1.3fr] lg:gap-20">
+    <Reveal className="grid gap-8 sm:gap-12 lg:grid-cols-[1fr_1.3fr] lg:gap-20">
       {/* Portrait column. SanityImage renders the brand duotone
           fallback when no portrait exists — so the column never
           feels empty even pre-photography. */}

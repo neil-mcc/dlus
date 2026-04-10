@@ -4,8 +4,8 @@ import AmbientField from "@/components/AmbientField";
 import Reveal from "@/components/motion/Reveal";
 
 /**
- * ModalityGallery — a horizontal scroll-snap row of three big
- * "cards", one per modality. Each card uses the per-modality
+ * TherapyGallery — a horizontal scroll-snap row of three big
+ * "cards", one per therapy. Each card uses the per-therapy
  * AmbientField as its hero backdrop with large serif type on top.
  * This replaces the previous 3-up `<ServiceCard>` grid on the
  * home page with something that looks like a spread, not a layout.
@@ -15,7 +15,7 @@ import Reveal from "@/components/motion/Reveal";
  * they scroll horizontally and each card snaps into place.
  */
 
-type Modality = {
+type Therapy = {
   title: string;
   blurb: string;
   href: string;
@@ -23,7 +23,7 @@ type Modality = {
   eyebrow: string;
 };
 
-const MODALITIES: Modality[] = [
+const THERAPIES: Therapy[] = [
   {
     title: "Hyperbaric Oxygen",
     blurb:
@@ -50,7 +50,7 @@ const MODALITIES: Modality[] = [
   },
 ];
 
-export default function ModalityGallery() {
+export default function TherapyGallery() {
   return (
     <Reveal className="relative">
       {/* Horizontal row. The negative margins let the scroll track
@@ -58,10 +58,10 @@ export default function ModalityGallery() {
           sit inside the normal gutter on desktop via `px-6 sm:px-8`. */}
       <div
         role="list"
-        aria-label="Three modalities"
+        aria-label="Three therapies"
         className="-mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-6 sm:-mx-8 sm:px-8"
       >
-        {MODALITIES.map((m) => (
+        {THERAPIES.map((m) => (
           <Link
             role="listitem"
             key={m.href}
