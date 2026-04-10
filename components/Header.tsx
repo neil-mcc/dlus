@@ -19,7 +19,7 @@ export default function Header() {
       <div className="mx-auto flex w-full max-w-[var(--max-w)] items-center justify-between gap-4 px-4 py-3 sm:gap-6 sm:px-8">
         <Link href="/" aria-label="Dlús Recovery — home" className="flex items-center">
           <Image
-            src="/brand/untitled.svg"
+            src="/brand/Untitled.svg"
             alt="Dlús Recovery"
             width={200}
             height={200}

@@ -30,7 +30,7 @@ export default async function Footer() {
         <div className="grid grid-cols-2 gap-8 sm:gap-12 md:grid-cols-4">
           <div>
             <Image
-              src="/brand/untitled.svg"
+              src="/brand/Untitled.svg"
               alt={businessName}
               width={200}
               height={200}
