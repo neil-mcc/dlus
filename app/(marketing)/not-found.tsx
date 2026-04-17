@@ -43,7 +43,7 @@ export default function NotFound() {
             href="/book"
             className="inline-flex items-center gap-2 underline underline-offset-4 hover:text-[var(--accent)]"
           >
-            Book an HBOT session →
+            Book a session →
           </Link>
         </li>
         <li>

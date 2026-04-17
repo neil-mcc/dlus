@@ -8,10 +8,9 @@ import type { AcuityServiceKey } from "@/lib/acuity";
 
 /**
  * Derive a booking key from the tier's linked Sanity service title.
- * Anything we can't confidently match falls back to `hbot` — the
- * only service currently live in Acuity. Non-HBOT keys render as
- * "scheduling opens soon" via BookNowButton until those links go
- * live.
+ * The key scopes the default button label (e.g. "Book Red Light") —
+ * every key routes to the same Acuity scheduler, where the visitor
+ * picks their service.
  */
 function bookKeyFor(tier: PricingTier): AcuityServiceKey {
   const title = tier.serviceRef?.title?.toLowerCase() ?? "";
@@ -48,11 +47,11 @@ export default async function PricingPage() {
           </h1>
           <p className="mt-6 text-lg text-[var(--muted)]">
             Try a single session, save with a bundle, or commit to weekly recovery
-            with a membership. HBOT is live now — Red Light, PEMF and
-            consultations open for booking soon.
+            with a membership. Every therapy — HBOT, Red Light, PEMF — is
+            bookable below.
           </p>
           <div className="mt-8">
-            <BookNowButton serviceKey="hbot" label="Book an HBOT session" />
+            <BookNowButton label="Book a session" />
           </div>
         </div>
       </Section>

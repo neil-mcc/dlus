@@ -5,14 +5,13 @@ site. Anything left unchecked is a launch blocker.
 
 ## Booking
 
-- [ ] Replace placeholder URLs in `lib/acuity.ts` with the live Acuity owner +
-      appointment-type IDs for HBOT, Red Light, PEMF and the free consultation.
-- [ ] Visit `/book` on the production preview. Click each service tab (HBOT,
-      Red Light, PEMF, Free consult) and confirm the embedded Acuity scheduler
-      loads the correct appointment type and auto-resizes as you step through
-      it.
+- [ ] Confirm `ACUITY_BOOKING_URL` in `lib/acuity.ts` matches the live top-level
+      scheduler shared on Instagram and other channels.
+- [ ] Visit `/book` on the production preview. Confirm the embedded Acuity
+      scheduler loads the service picker (HBOT, Red Light, PEMF, free
+      consultation) and auto-resizes as you step through each flow.
 - [ ] Click every "Book Now" / "Book a session" CTA across the site and
-      confirm it routes to `/book?service=…` with the right tab preselected.
+      confirm it routes to `/book?service=…` and lands on the scheduler.
 - [ ] Complete one real test booking end-to-end and confirm the confirmation
       email from Acuity arrives.
 - [ ] **CSP (if/when added):** the Acuity iframe + auto-resize script require

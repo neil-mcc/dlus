@@ -140,10 +140,7 @@ export default async function HomePage() {
               </p>
               <div className="mt-12 flex flex-wrap items-center gap-6">
                 <Magnetic>
-                  <BookNowButton
-                    serviceKey="hbot"
-                    label="Book an HBOT session"
-                  />
+                  <BookNowButton label="Book a session" />
                 </Magnetic>
                 <Link
                   href="/which"
@@ -283,10 +280,7 @@ export default async function HomePage() {
             </h2>
           </Reveal>
           <Magnetic>
-            <BookNowButton
-              serviceKey="hbot"
-              label="Book your first HBOT session"
-            />
+            <BookNowButton label="Book your first session" />
           </Magnetic>
         </div>
       </section>

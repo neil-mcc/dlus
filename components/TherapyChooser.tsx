@@ -6,7 +6,6 @@ import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, Sparkles } from "lucide-react";
 import AmbientField from "@/components/AmbientField";
 import Magnetic from "@/components/motion/Magnetic";
-import { ACUITY_LIVE } from "@/lib/acuity";
 
 /**
  * TherapyChooser — a 3-question interactive quiz that recommends
@@ -362,36 +361,14 @@ export default function TherapyChooser() {
                   {THERAPY_META[result].copy}
                 </p>
                 <div className="mt-2 flex flex-wrap items-center gap-5">
-                  {ACUITY_LIVE[THERAPY_META[result].bookKey] ? (
-                    <Magnetic>
-                      <Link
-                        href={`/book?service=${THERAPY_META[result].bookKey}`}
-                        className="inline-flex items-center justify-center rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-medium uppercase tracking-wide text-[var(--accent-ink)] hover:bg-[var(--accent-deep)]"
-                      >
-                        Book {THERAPY_META[result].title}
-                      </Link>
-                    </Magnetic>
-                  ) : (
-                    // Non-HBOT services: muted "opens soon" chip plus a
-                    // contact-form fallback so interested users have a
-                    // path forward until scheduling goes live.
-                    <div className="flex flex-wrap items-center gap-3">
-                      <span
-                        aria-disabled="true"
-                        className="inline-flex cursor-not-allowed items-center justify-center rounded-full border border-dashed border-[var(--slab-ink)]/40 px-6 py-3 text-sm font-medium uppercase tracking-wide"
-                        style={{ color: "var(--slab-ink)", opacity: 0.75 }}
-                      >
-                        {THERAPY_META[result].title} scheduling opens soon
-                      </span>
-                      <Link
-                        href="/contact"
-                        className="inline-flex items-center gap-2 text-sm font-medium underline-offset-4 hover:underline"
-                        style={{ color: "var(--slab-ink)" }}
-                      >
-                        Register interest →
-                      </Link>
-                    </div>
-                  )}
+                  <Magnetic>
+                    <Link
+                      href={`/book?service=${THERAPY_META[result].bookKey}`}
+                      className="inline-flex items-center justify-center rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-medium uppercase tracking-wide text-[var(--accent-ink)] hover:bg-[var(--accent-deep)]"
+                    >
+                      Book {THERAPY_META[result].title}
+                    </Link>
+                  </Magnetic>
                   <Link
                     href={THERAPY_META[result].href}
                     className="inline-flex items-center gap-2 text-sm font-medium underline-offset-4 hover:underline"

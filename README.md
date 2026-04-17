@@ -57,22 +57,18 @@ See `.env.example` for the canonical list. The site will build with empty
 Sanity / Resend env vars — pages render with placeholder fallbacks and the
 contact form returns a friendly 503. **Do not deploy without filling them in.**
 
-## Updating Acuity links
+## Updating the Acuity link
 
-All booking buttons read from a single file:
+Every booking button and the `/book` embed route to a single URL defined in
+`lib/acuity.ts`:
 
 ```ts
-// lib/acuity.ts
-export const ACUITY_LINKS = {
-  hbot: "https://app.acuityscheduling.com/...",
-  redLight: "...",
-  pemf: "...",
-  consultation: "...",
-};
+export const ACUITY_BOOKING_URL = "https://dlusrecovery.as.me/schedule/d65e7959";
 ```
 
-Each value is the deep link to a specific Acuity appointment type
-(`?owner=…&appointmentType=…`). Change them here and every CTA across the
+This is the same top-level scheduler shared on Instagram and elsewhere —
+visitors land on Acuity's service picker and choose HBOT, Red Light, PEMF
+or a consultation from there. Change the URL here and every CTA across the
 site updates.
 
 ## Sanity content

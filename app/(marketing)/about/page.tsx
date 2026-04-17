@@ -296,10 +296,7 @@ export default async function AboutPage() {
             </h2>
           </Reveal>
           <Magnetic>
-            <BookNowButton
-              serviceKey="hbot"
-              label="Book an HBOT session"
-            />
+            <BookNowButton label="Book a session" />
           </Magnetic>
         </div>
       </section>

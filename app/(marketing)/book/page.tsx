@@ -14,9 +14,9 @@ import Reveal from "@/components/motion/Reveal";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata = buildMetadata({
-  title: "Book an HBOT session",
+  title: "Book a session",
   description:
-    "Reserve a hyperbaric oxygen therapy session at Dlús Recovery in Armagh. Live availability, confirmation by email, first-visit questionnaire handled afterwards.",
+    "Reserve HBOT, Red Light or PEMF at Dlús Recovery in Armagh. Live availability, confirmation by email, first-visit questionnaire handled afterwards.",
   path: "/book",
 });
 
@@ -36,8 +36,8 @@ export const metadata = buildMetadata({
 const STEPS = [
   {
     icon: CircleCheck,
-    title: "Pick your hour",
-    body: "HBOT slots are live below. Choose a morning, afternoon or evening that suits — confirmation arrives the moment your slot is held.",
+    title: "Pick your therapy + hour",
+    body: "Choose HBOT, Red Light or PEMF below, then a time that suits — confirmation arrives the moment your slot is held.",
   },
   {
     icon: Leaf,
@@ -59,7 +59,7 @@ export default function BookPage() {
           -------------------------------------------------------- */}
       <Section bleed className="pt-24 pb-14 sm:pt-44">
         <Reveal>
-          <span className="t-eyebrow">Book · HBOT</span>
+          <span className="t-eyebrow">Book a session</span>
           <h1 className="t-display-sm mt-4 max-w-[14ch]">
             Reserve your
             <br />
@@ -69,9 +69,9 @@ export default function BookPage() {
             className="t-lead mt-6 max-w-2xl"
             style={{ color: "var(--muted)" }}
           >
-            Live availability for hyperbaric oxygen therapy. Sixty minutes in
-            the chamber, ten minutes of settling on either side, nothing
-            rushed. Red Light and PEMF scheduling opens soon.
+            Live availability for HBOT, Red Light and PEMF. Pick a therapy,
+            pick a time — confirmation lands in your inbox the moment your
+            slot is held.
           </p>
         </Reveal>
       </Section>
