@@ -25,7 +25,7 @@ export default async function ContactPage() {
           </p>
           <h1 className="font-serif text-5xl leading-[1.05] sm:text-6xl">Say hello</h1>
           <p className="mt-6 text-lg text-[var(--muted)]">
-            For bookings, please use our online scheduler — it's the fastest way
+            For bookings, please use our online scheduler — it&rsquo;s the fastest way
             to lock in a session. For everything else, this form lands in our
             inbox.
           </p>

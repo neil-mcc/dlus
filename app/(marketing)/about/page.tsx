@@ -181,7 +181,7 @@ export default async function AboutPage() {
             `siteSettings.aboutCollage[0..2]` in order. When the array
             is empty (or has fewer than three items) each empty slot
             falls back to its per-therapy duotone. */}
-        <div className="grid grid-cols-2 gap-5 sm:grid-cols-4 sm:grid-rows-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-4 sm:grid-rows-2">
           <div className="sm:col-span-2 sm:row-span-2">
             <SanityImage
               source={collageTile(0)}
@@ -297,8 +297,8 @@ export default async function AboutPage() {
           </Reveal>
           <Magnetic>
             <BookNowButton
-              serviceKey="consultation"
-              label="Book a tour or session"
+              serviceKey="hbot"
+              label="Book an HBOT session"
             />
           </Magnetic>
         </div>
