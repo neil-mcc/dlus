@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import { useRef } from "react";
 
 /**
@@ -47,12 +47,47 @@ const STEPS = [
 
 export default function MinuteByMinute() {
   const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
   });
   // Progress bar fills from 0 → 100% as the pinned section scrolls
   const progress = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
+  // Reduced-motion: flatten the pinned-scroll choreography entirely.
+  // Each step renders as plain flow at full opacity so the content
+  // is still readable and the progress bar stays parked at 100%
+  // without chasing scroll.
+  if (reduce) {
+    return (
+      <div className="mx-auto w-full max-w-[var(--max-w)] px-6 py-20 sm:px-8 sm:py-28">
+        <span className="t-eyebrow">A first visit</span>
+        <h2 className="t-h1 mt-4">
+          Your first session, <br />
+          minute by minute.
+        </h2>
+        <ol className="mt-12 flex flex-col gap-10">
+          {STEPS.map((step) => (
+            <li
+              key={step.time}
+              className="flex gap-6 border-l border-[var(--rule)] pl-6"
+            >
+              <div className="flex flex-col gap-2">
+                <span className="t-eyebrow" style={{ color: "var(--accent)" }}>
+                  {step.time}
+                </span>
+                <h3 className="t-h3">{step.title}</h3>
+                <p className="t-body" style={{ color: "var(--muted)" }}>
+                  {step.body}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -120,14 +155,12 @@ function Row({
 }) {
   // Each row "activates" across a window of the overall progress.
   //
-  // We use a three-point mapping (dim → bright → dim) rather than a
-  // four-point one so there's no risk of two offsets colliding at the
-  // clamp boundaries. Rows are spaced evenly across [0.05, 0.9] so the
-  // first row lights up just after the pin starts and the last row
-  // lights up before the pin releases — otherwise the final step
-  // never reaches full opacity because the sticky unpins before
-  // progress hits 1.
-  const isLast = index === count - 1;
+  // Rows are spaced evenly across [0.05, 0.65] so the first row lights
+  // up just after the pin starts and the last row lights up before the
+  // pin releases. Once a row reaches its peak it stays at full
+  // opacity — earlier steps remain legible as you read past them,
+  // and rows ahead of the current scroll position keep a dim intro
+  // state so the "walking line" reveal still feels directional.
   const windowStart = 0.05;
   const windowEnd = 0.65;
   const span = windowEnd - windowStart;
@@ -135,13 +168,10 @@ function Row({
   const half = span / count;
   // Strictly monotonic, inside [0, 1].
   const fadeIn = Math.max(0, peak - half);
-  const fadeOut = Math.min(1, peak + half);
-  // The last row stays lit once reached — no fade-back-out ramp, so
-  // it remains fully visible as the viewer reads past the pin.
   const opacity = useTransform(
     progress,
-    isLast ? [fadeIn, peak, 1] : [fadeIn, peak, fadeOut],
-    isLast ? [0.35, 1, 1] : [0.35, 1, 0.35],
+    [fadeIn, peak, 1],
+    [0.35, 1, 1],
   );
 
   return (

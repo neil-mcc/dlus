@@ -32,8 +32,13 @@ export default function Curtain() {
   useEffect(() => {
     // SSR guard — sessionStorage is not available during render.
     if (typeof window === "undefined") return;
+    // The set-state-in-effect disable below is deliberate: this is a
+    // one-shot read of sessionStorage that seeds initial play/done
+    // state exactly once on mount. No cascading render — the effect
+    // runs once, reads an external source, and settles.
     try {
       if (sessionStorage.getItem("dlus:curtain-seen") === "1") {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot session seed
         setDone(true);
         return;
       }

@@ -74,7 +74,7 @@ export default function ContactForm() {
       <Field label="Phone (optional)" name="phone" type="tel" />
 
       <label className="block">
-        <span className="text-sm font-medium">What's it about?</span>
+        <span className="text-sm font-medium">What&rsquo;s it about?</span>
         <select
           name="enquiryType"
           required

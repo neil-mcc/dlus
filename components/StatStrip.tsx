@@ -23,10 +23,22 @@ type Props = {
   className?: string;
 };
 
+// Tailwind's JIT can't resolve interpolated class names — it scans
+// source for literal strings. We look up the desktop column count
+// against a static map so the correct class is always in the build.
+// If a consumer passes 5+ items, we fall back to 4 columns.
+const LG_COLS: Record<number, string> = {
+  1: "lg:grid-cols-1",
+  2: "lg:grid-cols-2",
+  3: "lg:grid-cols-3",
+  4: "lg:grid-cols-4",
+};
+
 export default function StatStrip({ items, className = "" }: Props) {
+  const lgCols = LG_COLS[items.length] ?? "lg:grid-cols-4";
   return (
     <Reveal
-      className={`grid gap-10 sm:grid-cols-2 lg:grid-cols-${items.length} ${className}`}
+      className={`grid gap-10 sm:grid-cols-2 ${lgCols} ${className}`}
     >
       {items.map((stat) => (
         <div key={stat.label} className="flex flex-col gap-2">

@@ -2,101 +2,77 @@
 
 import { useSearchParams } from "next/navigation";
 import Script from "next/script";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { ExternalLink } from "lucide-react";
-import {
-  ACUITY_LABELS,
-  ACUITY_LINKS,
-  type AcuityServiceKey,
-} from "@/lib/acuity";
+import { ACUITY_LABELS, ACUITY_LINKS } from "@/lib/acuity";
 
-const SERVICE_ORDER: AcuityServiceKey[] = [
-  "hbot",
-  "redLight",
-  "pemf",
-  "consultation",
-];
+/**
+ * HBOT is currently the only service with a live Acuity deep link
+ * (see `lib/acuity.ts`). Rather than showing a tab picker that leads
+ * three of four options to placeholder URLs, we lock the embed to
+ * HBOT and silently ignore the `?service=` query so existing
+ * site-wide CTAs (some of which still pass `serviceKey="consultation"`)
+ * land on a working scheduler instead of a broken iframe.
+ *
+ * When the remaining Acuity links are filled in, restore the tab
+ * picker by re-introducing SERVICE_ORDER and the state-driven
+ * `active` service key.
+ */
+const SERVICE = "hbot" as const;
 
-const SERVICE_LABELS: Record<AcuityServiceKey, string> = {
-  hbot: "HBOT",
-  redLight: "Red Light",
-  pemf: "PEMF",
-  consultation: "Free consult",
-};
-
-function isServiceKey(value: string | null): value is AcuityServiceKey {
-  return value !== null && (SERVICE_ORDER as string[]).includes(value);
-}
+// Acuity URL params that are safe to forward from the page URL into
+// the iframe — UTM attribution plus their own `ref` escape hatch.
+const FORWARDABLE = new Set([
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_term",
+  "utm_content",
+  "source",
+  "ref",
+]);
 
 export default function AcuityEmbed() {
   const searchParams = useSearchParams();
-  const initial = searchParams.get("service");
-  const [active, setActive] = useState<AcuityServiceKey>(
-    isServiceKey(initial) ? initial : "consultation",
-  );
 
-  // Append embed-friendly query params. The `ref=embedded_csp` flag tells
-  // Acuity to render a simplified chrome suited to iframe embedding.
+  // Forward tracking params so the booking attributes back to the
+  // originating CTA/campaign. `ref=embedded_csp` tells Acuity to
+  // render the iframe-friendly chrome — keep it whether the page URL
+  // supplied one or not.
   const iframeSrc = useMemo(() => {
-    const base = ACUITY_LINKS[active];
+    const base = ACUITY_LINKS[SERVICE];
+    const forward = new URLSearchParams();
+    for (const [key, value] of searchParams.entries()) {
+      if (FORWARDABLE.has(key)) forward.set(key, value);
+    }
+    if (!forward.has("ref")) forward.set("ref", "embedded_csp");
     const joiner = base.includes("?") ? "&" : "?";
-    return `${base}${joiner}ref=embedded_csp`;
-  }, [active]);
+    return `${base}${joiner}${forward.toString()}`;
+  }, [searchParams]);
 
   return (
     <div>
-      {/* Service picker */}
-      <div
-        role="tablist"
-        aria-label="Choose a service to book"
-        className="flex flex-wrap gap-2"
+      {/* First-visit HBOT notice — always shown since HBOT is the
+          only service this embed handles right now. */}
+      <p
+        role="note"
+        className="rounded-xl border border-[var(--accent)]/40 bg-[var(--accent-soft)] p-4 text-sm leading-relaxed text-[var(--fg)]"
       >
-        {SERVICE_ORDER.map((key) => {
-          const selected = key === active;
-          return (
-            <button
-              key={key}
-              type="button"
-              role="tab"
-              aria-selected={selected}
-              onClick={() => setActive(key)}
-              className={
-                selected
-                  ? "rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-medium text-[var(--accent-ink)] transition"
-                  : "rounded-full border border-[var(--rule)] bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--wordmark)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
-              }
-            >
-              {SERVICE_LABELS[key]}
-            </button>
-          );
-        })}
-      </div>
+        <strong>First HBOT visit?</strong> We&apos;ll send a short health
+        questionnaire after you book. Some conditions require a brief
+        pre-screening consultation before your first session.
+        {/* TODO: legal review */}
+      </p>
 
-      {/* HBOT-specific notice, shown only when HBOT is selected */}
-      {active === "hbot" ? (
-        <p
-          role="note"
-          className="mt-4 rounded-xl border border-[var(--accent)]/40 bg-[var(--accent-soft)] p-4 text-sm leading-relaxed text-[var(--fg)]"
-        >
-          <strong>First HBOT visit?</strong> We'll send a short health
-          questionnaire after you book. Some conditions require a brief
-          pre-screening consultation before your first session.
-          {/* TODO: legal review */}
-        </p>
-      ) : null}
-
-      {/* The iframe. `key` forces a full remount when the active service
-          changes so Acuity's internal state resets cleanly. `scrolling="no"`
-          + `embed.js` hand scrolling to the host page so there's never a
-          nested scrollbar inside the scheduler card (matches the HotBox
-          pattern). `height={1100}` is a conservative starting point — tall
-          enough to fit Acuity's date/time picker on first paint, and
+      {/* The iframe. `scrolling="no"` hands scroll to the host page so
+          there's never a nested scrollbar inside the scheduler card.
+          `height={2150}` is a conservative starting point — tall enough
+          to fit Acuity's date/time picker on first paint, and
           `embed.js` grows the iframe as the flow progresses. */}
       <div className="mt-6 overflow-hidden rounded-2xl border border-[var(--rule)] bg-[var(--surface)]">
         <iframe
-          key={active}
           src={iframeSrc}
-          title={`Book ${ACUITY_LABELS[active]}`}
+          title={ACUITY_LABELS[SERVICE]}
           width="100%"
           height={2150}
           frameBorder={0}
@@ -110,7 +86,7 @@ export default function AcuityEmbed() {
       <p className="mt-3 text-center text-xs text-[var(--muted)]">
         Having trouble booking?{" "}
         <a
-          href={ACUITY_LINKS[active]}
+          href={ACUITY_LINKS[SERVICE]}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 underline underline-offset-4 hover:text-[var(--accent)]"

@@ -14,9 +14,9 @@ import Reveal from "@/components/motion/Reveal";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata = buildMetadata({
-  title: "Book a session",
+  title: "Book an HBOT session",
   description:
-    "Book HBOT, Red Light or PEMF at Dlús Recovery, or a free 15-minute consultation.",
+    "Reserve a hyperbaric oxygen therapy session at Dlús Recovery in Armagh. Live availability, confirmation by email, first-visit questionnaire handled afterwards.",
   path: "/book",
 });
 
@@ -36,13 +36,13 @@ export const metadata = buildMetadata({
 const STEPS = [
   {
     icon: CircleCheck,
-    title: "Choose your session",
-    body: "Pick a therapy and a time that fits. You'll get a confirmation email the moment your slot is held.",
+    title: "Pick your hour",
+    body: "HBOT slots are live below. Choose a morning, afternoon or evening that suits — confirmation arrives the moment your slot is held.",
   },
   {
     icon: Leaf,
-    title: "We confirm",
-    body: "If you're new to HBOT we'll send a short health questionnaire. Everything else runs automatically — no back-and-forth.",
+    title: "Complete the questionnaire",
+    body: "First-time visitors get a short health form by email. Under five minutes to fill in, and it's how we flag any pre-screening needs before you arrive.",
   },
   {
     icon: Clock,
@@ -59,7 +59,7 @@ export default function BookPage() {
           -------------------------------------------------------- */}
       <Section bleed className="pt-24 pb-14 sm:pt-44">
         <Reveal>
-          <span className="t-eyebrow">Book</span>
+          <span className="t-eyebrow">Book · HBOT</span>
           <h1 className="t-display-sm mt-4 max-w-[14ch]">
             Reserve your
             <br />
@@ -69,8 +69,9 @@ export default function BookPage() {
             className="t-lead mt-6 max-w-2xl"
             style={{ color: "var(--muted)" }}
           >
-            Live availability for HBOT, Red Light and PEMF — plus a free 15-minute
-            consultation if you&rsquo;re new to Dlús.
+            Live availability for hyperbaric oxygen therapy. Sixty minutes in
+            the chamber, ten minutes of settling on either side, nothing
+            rushed. Red Light and PEMF scheduling opens soon.
           </p>
         </Reveal>
       </Section>
@@ -127,27 +128,24 @@ export default function BookPage() {
           <div className="grid gap-12 lg:grid-cols-[320px_1fr] lg:gap-16">
             {/* Supporting copy column */}
             <aside className="space-y-8">
-              {/* Free consult cross-link */}
+              {/* New to HBOT — cross-link to the explainer page */}
               <div className="rounded-3xl border border-[var(--accent)]/40 bg-[var(--accent-soft)] p-6">
                 <Sparkles
                   className="h-5 w-5 text-[var(--accent-deep)]"
                   aria-hidden="true"
                 />
-                <h3 className="mt-3 t-h4">Not sure where to start?</h3>
+                <h3 className="mt-3 t-h4">New to hyperbaric oxygen?</h3>
                 <p className="mt-2 text-sm leading-relaxed text-[var(--fg)]/80">
-                  Book a free 15-minute consultation. We&rsquo;ll walk you
-                  through the space, answer questions, and help you pick the
-                  right therapy for your goals.
-                </p>
-                <p className="mt-4 text-xs text-[var(--muted)]">
-                  Select <strong>Free consult</strong> in the picker →
+                  A single 60-minute session at a gentle 1.3 ATA. You lie back,
+                  the chamber pressurises slowly, and you breathe as normal.
+                  Most people read, listen, or nap.
                 </p>
                 <p className="mt-4 text-xs">
                   <Link
-                    href="/which"
+                    href="/hbot"
                     className="text-[var(--accent-deep)] underline underline-offset-4 hover:text-[var(--accent)]"
                   >
-                    Or take the 30-second quiz →
+                    Read how HBOT works →
                   </Link>
                 </p>
               </div>
@@ -208,9 +206,12 @@ export default function BookPage() {
 }
 
 function EmbedFallback() {
+  // Height matches the iframe in AcuityEmbed.tsx (2150 + notice card +
+  // fallback link ≈ 2250px) so there's no layout shift when Suspense
+  // resolves. If the iframe height changes there, mirror it here.
   return (
     <div
-      className="flex h-[800px] items-center justify-center rounded-3xl border border-[var(--rule)] bg-[var(--surface)] text-sm text-[var(--muted)]"
+      className="flex min-h-[2250px] items-center justify-center rounded-3xl border border-[var(--rule)] bg-[var(--surface)] text-sm text-[var(--muted)]"
       aria-busy="true"
     >
       Loading the scheduler…

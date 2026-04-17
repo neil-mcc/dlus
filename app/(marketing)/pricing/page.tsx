@@ -4,6 +4,21 @@ import BookNowButton from "@/components/BookNowButton";
 import { getPricingTiers } from "@/lib/sanity/queries";
 import { buildMetadata } from "@/lib/seo";
 import type { PricingTier } from "@/lib/sanity/types";
+import type { AcuityServiceKey } from "@/lib/acuity";
+
+/**
+ * Derive a booking key from the tier's linked Sanity service title.
+ * Anything we can't confidently match falls back to `hbot` — the
+ * only service currently live in Acuity. Non-HBOT keys render as
+ * "scheduling opens soon" via BookNowButton until those links go
+ * live.
+ */
+function bookKeyFor(tier: PricingTier): AcuityServiceKey {
+  const title = tier.serviceRef?.title?.toLowerCase() ?? "";
+  if (title.includes("red")) return "redLight";
+  if (title.includes("pemf")) return "pemf";
+  return "hbot";
+}
 
 export const metadata = buildMetadata({
   title: "Pricing & Packages",
@@ -33,11 +48,11 @@ export default async function PricingPage() {
           </h1>
           <p className="mt-6 text-lg text-[var(--muted)]">
             Try a single session, save with a bundle, or commit to weekly recovery
-            with a membership. Not sure where to start?{" "}
-            <span className="underline underline-offset-4">Book a free 15-minute consultation</span>.
+            with a membership. HBOT is live now — Red Light, PEMF and
+            consultations open for booking soon.
           </p>
           <div className="mt-8">
-            <BookNowButton serviceKey="consultation" />
+            <BookNowButton serviceKey="hbot" label="Book an HBOT session" />
           </div>
         </div>
       </Section>
@@ -53,7 +68,7 @@ export default async function PricingPage() {
                 <PricingCard
                   key={tier._id}
                   tier={tier}
-                  bookKey="consultation"
+                  bookKey={bookKeyFor(tier)}
                 />
               ))}
             </div>

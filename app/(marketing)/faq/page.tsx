@@ -24,7 +24,7 @@ export default async function FaqPage() {
             Questions, answered
           </h1>
           <p className="mt-6 text-lg text-[var(--muted)]">
-            If you can't find what you're looking for, drop us a message — we
+            If you can&rsquo;t find what you&rsquo;re looking for, drop us a message — we
             usually reply within a working day.
           </p>
         </div>

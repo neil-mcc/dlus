@@ -1,9 +1,16 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+
+// Hydration-safe mounted flag without a setState-in-effect.
+// Server returns false; client returns true after hydration. Subscribe
+// is a no-op because the value never changes after mount.
+const subscribe = () => () => {};
+const getMountedSnapshot = () => true;
+const getMountedServerSnapshot = () => false;
 
 /**
  * MobileNav — hamburger icon + full-screen overlay menu for mobile
@@ -20,13 +27,20 @@ type NavItem = { href: string; label: string };
 
 export default function MobileNav({ items }: { items: NavItem[] }) {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    subscribe,
+    getMountedSnapshot,
+    getMountedServerSnapshot,
+  );
   const pathname = usePathname();
 
-  useEffect(() => setMounted(true), []);
-
-  // Close on route change.
-  useEffect(() => setOpen(false), [pathname]);
+  // Close on route change — adjust state during render rather than in
+  // an effect, per React 19 guidance for deriving state from props.
+  const [lastPath, setLastPath] = useState(pathname);
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
+    if (open) setOpen(false);
+  }
 
   // Lock body scroll while open.
   useEffect(() => {

@@ -93,7 +93,7 @@ export default function AmbientField({
     document.addEventListener("visibilitychange", onVis);
 
     let raf = 0;
-    let t0 = performance.now();
+    const t0 = performance.now();
 
     const tick = () => {
       if (!running) return;
@@ -294,7 +294,6 @@ function drawPemf(
   // pulse by dividing so user-perceived rate lands near 1.5 Hz.
   const schumann = 7.83;
   const phase = t * (schumann / 5);
-  const waveSpeed = 0.6;
 
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {

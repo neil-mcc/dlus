@@ -7,7 +7,7 @@ type Props = {
   bookKey?: AcuityServiceKey;
 };
 
-export default function PricingCard({ tier, bookKey = "consultation" }: Props) {
+export default function PricingCard({ tier, bookKey = "hbot" }: Props) {
   const perSession =
     tier.sessionCount && tier.sessionCount > 1
       ? `£${(tier.price / tier.sessionCount).toFixed(0)} / session`
